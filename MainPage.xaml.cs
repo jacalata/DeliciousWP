@@ -8,27 +8,14 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using ToDelicious.Resources;
-using Microsoft.Phone.Tasks; //marketplace review, email
 using Delicious;
 using System.Xml;
-using System.IO.IsolatedStorage;
-using System.IO;
 
 namespace ToDelicious
 {
     public partial class MainPage : PhoneApplicationPage
     {
-        // save the user values to iso storage
-        private static string isoStorePasswordLocation = "password";
-        private static string isoStoreUsernameLocation = "username";
-
-        // properties for databinding from ui
-        public string username { get; set; }
-        public string password { get; set; }
         public string url { get; set; }
-        // app version number for feedback emails and bug reports
-        private double _version = 0.1;
-        public double version { get { return _version; } private set { _version = value; } }
 
         // Constructor
         public MainPage()
@@ -36,43 +23,53 @@ namespace ToDelicious
             InitializeComponent();
 
             // Sample code to localize the ApplicationBar
-            //BuildLocalizedApplicationBar();
-            versionDisplay.Text = version.ToString();
+            BuildLocalizedApplicationBar();
         }
+
+        // Sample code for building a localized ApplicationBar
+
+        private void BuildLocalizedApplicationBar()
+      {
+        // Set the page's ApplicationBar to a new instance of ApplicationBar.
+          ApplicationBar = new ApplicationBar();
+ 
+           // Create a new button and set the text value to the localized string from AppResources.
+          ApplicationBarIconButton appBarSettingsButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/feature.settings.png", UriKind.Relative));
+            // TODO where do I set the result for clicking on it?
+          ApplicationBarIconButton appBarAboutButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/questionmark.png", UriKind.Relative));
+          appBarSettingsButton.Text = AppResources.AppBarSettingsButtonText;
+          appBarAboutButton.Text = AppResources.AppBarAboutButtonText;
+         ApplicationBar.Buttons.Add(appBarAboutButton);
+         ApplicationBar.Buttons.Add(appBarSettingsButton);
+       }
 
         private void sendUrlToDelicious()
         {
-            Delicious.Connection.Password = passwordText.Password;
-            Delicious.Connection.Username = usernameText.Text;
-            Delicious.Post.Add(urlText.Text, "my newest url"); //if you add user-entered urls, make sure to remind them they need http, or auto add it for them
-        }
-            
+            Delicious.Connection.Password = Settings.RetrievePassword();
+            Delicious.Connection.Username = Settings.RetrieveUsername();
+            if (Delicious.Connection.Password == null || Delicious.Connection.Username == null)
+            {
+                MessageBoxResult noCredentialsAction = MessageBox.Show("You need an account to post links", 
+                    "Would you like to enter your account details now?", MessageBoxButton.OKCancel);
+                if (noCredentialsAction == MessageBoxResult.Cancel)
+                    return;
+                else
+                    NavigationService.Navigate(new Uri("Settings.xaml", UriKind.Relative));
+            }
+            if (urlText.Text == null)
+                MessageBox.Show("No URL entered", "You need to add a url to send to Delicious!", MessageBoxButton.OK);
+            if (!urlText.Text.StartsWith("http"))
+                MessageBox.Show("Incomplete url", "Your URL needs to start with http", MessageBoxButton.OK);
+            if (descriptionText.Text == null)
+                descriptionText.Text = "url sent from WPDelicious";
 
-        private void EmailButton_Click(object sender, RoutedEventArgs e)
-        {
-            EmailComposeTask emailComposeTask = new EmailComposeTask();
-
-            emailComposeTask.Subject = "Feedback: WP To Delicious" + version;
-            emailComposeTask.Body = "";
-            emailComposeTask.To = "jacalata@live.com";
-
-            emailComposeTask.Show();
-        }
-
-        private void RateApp_Click(object sender, RoutedEventArgs e)
-        {
-            MarketplaceReviewTask marketplaceReviewTask = new MarketplaceReviewTask();
-            marketplaceReviewTask.Show();
+            Delicious.Post.Add(urlText.Text, descriptionText.Text, null, tagText.Text, null); //if you add user-entered urls, make sure to remind them they need http, or auto add it for them
         }
 
-        private void ConnectButton_Click(object sender, RoutedEventArgs e)
+        private void SendButton_Click(object sender, RoutedEventArgs e)
         {
+            MessageBox.Show("we are sending: " + Settings.RetrieveUsername() + ", " + Settings.RetrievePassword() + ", " + urlText.Text);
             sendUrlToDelicious();
-        }
-
-        private void DisconnectButton_Click(object sender, RoutedEventArgs e)
-        {
-            // delete any saved user data from isolated storage
         }
 
         // Sample code for building a localized ApplicationBar

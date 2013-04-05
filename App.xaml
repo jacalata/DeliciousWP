@@ -1,5 +1,6 @@
 ﻿<Application
     x:Class="ToDelicious.App"
+    xmlns:local="clr-namespace:ToDelicious"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
@@ -8,6 +9,9 @@
     <!--Application Resources-->
     <Application.Resources>
         <local:LocalizedStrings xmlns:local="clr-namespace:ToDelicious" x:Key="LocalizedStrings"/>
+        <local:BoolToVisibilityConverter x:Key="BooleanVisibility" TrueValue="Visible" FalseValue="Collapsed" />
+        <local:BoolToVisibilityConverter x:Key="BooleanInVisibility" TrueValue="Collapsed" FalseValue="Visible" />
+
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>

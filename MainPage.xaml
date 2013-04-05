@@ -42,64 +42,50 @@
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
             <TextBlock Text="SHARE TO DELICIOUS" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,0"/>
-            <TextBlock Text="settings" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock Text="link details" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <Grid Grid.Row="1" >
             <StackPanel x:Name="ContentPanel">
-                <Grid x:Name="usernameFields">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="username: " VerticalAlignment="Center" />
-                    <TextBox x:Name="usernameText" 
-                        Grid.Column="1" Text="{Binding username, Mode=TwoWay}"/>
-                </Grid>
-
-                <Grid x:Name="passwordFields">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="password: " VerticalAlignment="Center" />
-                    <PasswordBox x:Name="passwordText"  
-                             Grid.Column="1" />
-                </Grid>
 
                 <Grid x:Name="urlFields">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="url: " VerticalAlignment="Center" />
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="0" Grid.Row="0" Text="url: " VerticalAlignment="Center" 
+                               Margin="12,0,0,0"/>
                     <TextBox x:Name="urlText"
-                        Grid.Column="1" Text="{Binding url, Mode=TwoWay}"/>
+                        Grid.Column="1" Grid.Row="0" Text="{Binding url, Mode=TwoWay}"/>
+
+                    <TextBlock Grid.Column="0" Grid.Row="1" Text="tags:" VerticalAlignment="Center" 
+                               Margin="12,0,0,0"/>
+                    <TextBox x:Name="tagText" Grid.Row="1"
+                        Grid.Column="1" Text="{Binding tags, Mode=TwoWay}"/>
                 </Grid>
-                <Button x:Name="buttonConnect"
-                        Content="Connect to Del.icio.us"
+
+                <Grid x:Name="autoSuggestFields">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <CheckBox Grid.Column="0" x:Name="doUseAutoSuggest" />
+                    <TextBlock Grid.Column="1" Text="use auto-suggested tags"  VerticalAlignment="Center" />
+                </Grid>
+
+                <TextBlock Text="description: " 
+                               Margin="12,0,0,0"/>
+                <TextBox x:Name="descriptionText" TextWrapping="Wrap" Height="120" />
+                
+                <Button x:Name="buttonSend"
+                        Content="Send to Del.icio.us"
                         HorizontalAlignment="Right" 
-                        Click="ConnectButton_Click"/>
-                <Button x:Name="buttonDisconnect" 
-                        Content="Sign out of Del.icio.us" 
-                        HorizontalAlignment="Right" 
-                        Visibility="Collapsed"
-                        Click="DisconnectButton_Click"
-                        />
-
-                <TextBlock x:Name="AboutText" Margin="12,12"  
-                           Text="This unofficial app is designed simply to allow you to send a new link to your
-existing Del.icio.us account. Unfortunately, it isn't possible to add an option from within the IE 'Share Page' action." 
-                           TextWrapping="Wrap"/>
-                <StackPanel x:Name="aboutText" Orientation="Horizontal" Margin="12">
-                    <TextBlock Text="app version: " />
-                    <TextBlock x:Name="versionDisplay" />
-                </StackPanel>
-
-                <Button x:Name="EmailButton" Content="Send Feedback" Click="EmailButton_Click"/>
-                <Button x:Name="RateButton" Content="Rate In Marketplace" Click="RateApp_Click"/>
-
+                        Click="SendButton_Click"/>
             </StackPanel>
 
         </Grid>
@@ -110,6 +96,7 @@ existing Del.icio.us account. Unfortunately, it isn't possible to add an option 
 
             Before shipping remove this XAML and the image itself.-->
         <!--<Image Source="/Assets/AlignmentGrid.png" VerticalAlignment="Top" Height="800" Width="480" Margin="0,-32,0,0" Grid.Row="0" Grid.RowSpan="2" IsHitTestVisible="False" />-->
+    
     </Grid>
 
 </phone:PhoneApplicationPage>
