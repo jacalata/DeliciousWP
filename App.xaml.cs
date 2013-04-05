@@ -7,6 +7,7 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using ToDelicious.Resources;
+using System.IO.IsolatedStorage;
 
 namespace ToDelicious
 {
@@ -17,6 +18,20 @@ namespace ToDelicious
         /// </summary>
         /// <returns>The root frame of the Phone Application.</returns>
         public static PhoneApplicationFrame RootFrame { get; private set; }
+
+
+        // location to save the user values to iso storage
+        public static string isoStorePasswordLocation = "password";
+        public static string isoStoreUsernameLocation = "username";
+        // property for whether the account data is currently stored
+        public static bool hasAccount
+        {
+            get
+            {
+                IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication();
+                return store.FileExists(isoStorePasswordLocation);
+            }
+        }
 
         /// <summary>
         /// Constructor for the Application object.
@@ -55,33 +70,8 @@ namespace ToDelicious
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
 
-            // handle redirecting to settings if needed
-            RootFrame.Navigating += new NavigatingCancelEventHandler(RootFrame_Navigating);
-
         }
 
-
-        // from http://blogs.msdn.com/b/ptorr/archive/2010/08/28/redirecting-an-initial-navigation.aspx?wa=wsignin1.0
-        private void RootFrame_Navigating(object sender, NavigatingCancelEventArgs e)
-        {
-
-            // Only care about intercepting the MainPage if we haven't entered credentials yet
-            if (e.Uri.ToString().Contains("/MainPage.xaml") != true
-                || Settings.RetrievePassword() == null)
-            {
-                return;
-            }
-
-            // Cancel current navigation and schedule the real navigation for the next tick
-            // (we can't navigate immediately as that will fail; no overlapping navigations
-            // are allowed)
-            e.Cancel = true;
-            RootFrame.Dispatcher.BeginInvoke(delegate
-            {
-                RootFrame.Navigate(new Uri("/Settings.xaml", UriKind.Relative));
-            });
-
-        }
 
         // Code to execute when the application is launching (eg, from Start)
         // This code will not execute when the application is reactivated

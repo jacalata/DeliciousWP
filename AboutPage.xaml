@@ -31,13 +31,14 @@
             <StackPanel>
                 <TextBlock x:Name="AboutText" Margin="12,12"  
                            Text="This unofficial app is designed simply to allow you to send a new link to your
-existing Del.icio.us account. If you don't have an account on delicious, you can create one at delicious.com.
-                           "
+existing Del.icio.us account. "
                            TextWrapping="Wrap"/>
                 <TextBlock x:Name="HelpText" Margin="12,12"  
                            Text="To upload a new link, you need to first fill in your account details on the settings page.
-                           When uploading, you can also include a description of the link you are posting, and a set of comma separated tags, e.g; 'video,for bob,explosions'
-                           Unfortunately, it isn't possible to add an option from within the IE 'Share Page' action."       
+                           When uploading, you can also include a description of the link you are posting, and a set of comma separated tags, e.g; 'video,bob,explosions'"
+                           TextWrapping="Wrap"/>
+                <TextBlock x:Name="LameText" Margin="12,12"  
+                           Text="Unfortunately it isn't possible to add an option from within the IE 'Share Page' action."       
                            TextWrapping="Wrap"/>
             <StackPanel x:Name="aboutText" Orientation="Horizontal" Margin="12">
                 <TextBlock Text="app version: " />

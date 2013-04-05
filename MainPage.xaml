@@ -61,26 +61,20 @@
                     <TextBlock Grid.Column="0" Grid.Row="0" Text="url: " VerticalAlignment="Center" 
                                Margin="12,0,0,0"/>
                     <TextBox x:Name="urlText"
-                        Grid.Column="1" Grid.Row="0" Text="{Binding url, Mode=TwoWay}"/>
+                        Grid.Column="1" Grid.Row="0" Text="{Binding url, Mode=TwoWay}"
+                         InputScope="Url"/>
 
                     <TextBlock Grid.Column="0" Grid.Row="1" Text="tags:" VerticalAlignment="Center" 
                                Margin="12,0,0,0"/>
                     <TextBox x:Name="tagText" Grid.Row="1"
-                        Grid.Column="1" Text="{Binding tags, Mode=TwoWay}"/>
-                </Grid>
-
-                <Grid x:Name="autoSuggestFields">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <CheckBox Grid.Column="0" x:Name="doUseAutoSuggest" />
-                    <TextBlock Grid.Column="1" Text="use auto-suggested tags"  VerticalAlignment="Center" />
+                        Grid.Column="1" Text="{Binding tags, Mode=TwoWay}"
+                         InputScope="Text"/>
                 </Grid>
 
                 <TextBlock Text="description: " 
                                Margin="12,0,0,0"/>
-                <TextBox x:Name="descriptionText" TextWrapping="Wrap" Height="120" />
+                <TextBox x:Name="descriptionText" TextWrapping="Wrap" Height="120"
+                         InputScope="Text"/>
                 
                 <Button x:Name="buttonSend"
                         Content="Send to Del.icio.us"

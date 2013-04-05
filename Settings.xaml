@@ -31,15 +31,6 @@
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <StackPanel>
-
-<!-- should only be visible if we have a saved username and password, use boolean visibilty converter -->
-                <Button x:Name="buttonClearStorage" 
-                        Content="Delete saved username and password" 
-                        HorizontalAlignment="Stretch" 
-                        Click="ConnectButton_Click"
-                        Margin="0,0,00,60"
-                        Visibility="{Binding hasAccount, Converter={StaticResource BooleanInVisibility}}" 
-                        />
                 <Grid x:Name="usernameFields">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" />
@@ -61,12 +52,28 @@
                              Grid.Column="1" />
             </Grid>
 
-                <Button x:Name="buttonConnect" 
-                        Content="Connect to Del.icio.us" 
-                        HorizontalAlignment="Right" 
+
+                <!-- should only be visible if we have a saved username and password, use boolean visibilty converter -->
+                <Button x:Name="buttonClearStorage" 
+                        Content="Delete saved account details" 
+                        HorizontalAlignment="Stretch" 
                         Click="ConnectButton_Click"
+                        Visibility="{Binding hasAccount, Converter={StaticResource BooleanVisibility}}" 
                         />
+                <!-- should only be visible if we do not currently have -->
+                <Button x:Name="buttonConnect" 
+                        Content="Save account details" 
+                        HorizontalAlignment="STretch" 
+                        Click="ConnectButton_Click"
+                        Visibility="{Binding hasAccount, Converter={StaticResource BooleanInVisibility}}" 
+                         />
                 
+                <StackPanel>
+                    <TextBlock Text="Don't have an account?" HorizontalAlignment="Center"/>
+                    <HyperlinkButton Content="Create one at delicious.com" 
+                               TargetName="_blank"
+                                     NavigateUri="http:\\www.delicious.com"/>
+                </StackPanel>
 
             </StackPanel>
         </Grid>

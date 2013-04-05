@@ -17,17 +17,17 @@ namespace ToDelicious
 
     public partial class Settings: PhoneApplicationPage
     {
-        // location to save the user values to iso storage
-        private static string isoStorePasswordLocation = "password";
-        private static string isoStoreUsernameLocation = "username";
 
         // property for whether the account data is currently stored
         public bool hasAccount
         {
             get
             {
-                IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication();
-                return store.FileExists(isoStorePasswordLocation);
+                return App.hasAccount;
+            }
+            set
+            {
+                hasAccount = hasAccount;
             }
         }
 
@@ -52,12 +52,12 @@ namespace ToDelicious
         {
             byte [] randomData = ProtectData("blargywhatsitfakedata");
             // write over any saved user data from isolated storage just for extra fun
-            WriteProtectedDataToFile(randomData, isoStorePasswordLocation);
-            WriteProtectedDataToFile(randomData, isoStoreUsernameLocation);
+            WriteProtectedDataToFile(randomData, App.isoStorePasswordLocation);
+            WriteProtectedDataToFile(randomData, App.isoStoreUsernameLocation);
             // now delete those files, which should only contain garbage anyway
             IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication();
-            store.DeleteFile(isoStorePasswordLocation);
-            store.DeleteFile(isoStoreUsernameLocation);
+            store.DeleteFile(App.isoStorePasswordLocation);
+            store.DeleteFile(App.isoStoreUsernameLocation);
         }
 
         /// <summary>
@@ -69,10 +69,10 @@ namespace ToDelicious
         {
             // Store the encrypted password in isolated storage
             byte[] protectedPassword = ProtectData(passwordText.Password);
-            WriteProtectedDataToFile(protectedPassword, isoStorePasswordLocation);
+            WriteProtectedDataToFile(protectedPassword, App.isoStorePasswordLocation);
             // Might as well encrypt the username too
             byte [] protectedUsername = ProtectData(usernameText.Text);
-            WriteProtectedDataToFile(protectedUsername, isoStoreUsernameLocation);
+            WriteProtectedDataToFile(protectedUsername, App.isoStoreUsernameLocation);
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace ToDelicious
         public static string RetrievePassword()
         {
             // Retrieve the PIN from isolated storage.
-            byte[] protectedPassword = ReadDataFromFile(isoStorePasswordLocation);
+            byte[] protectedPassword = ReadDataFromFile(App.isoStorePasswordLocation);
             if (protectedPassword == null)
                 return "";
             // Decrypt the PIN by using the Unprotect method.
@@ -98,7 +98,7 @@ namespace ToDelicious
         public static string RetrieveUsername()
         {
             // Retrieve the username from isolated storage.
-            byte[] protectedUsername = ReadDataFromFile(isoStoreUsernameLocation);
+            byte[] protectedUsername = ReadDataFromFile(App.isoStoreUsernameLocation);
             if (protectedUsername == null)
                 return "";
             // Decrypt the username by using the Unprotect method.
